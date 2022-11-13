@@ -1,0 +1,11 @@
+fun fib(n) {
+ if (n < 2) {
+	return n;
+ }	else {
+	return  fib(n - 1) + fib(n - 2);
+ }
+}
+
+print fib(31);
+// Reference jlox returns 1346269
+// Reference clox returns 1.34627e+06
