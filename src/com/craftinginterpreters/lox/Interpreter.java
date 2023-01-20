@@ -1,9 +1,19 @@
 package com.craftinginterpreters.lox;
 
 class Interpreter implements Expr.Visitor<Object> {
+
   @Override
-  public visitGroupingExpr(Expr.Grouping expr) {
+  public Object visitGroupingExpr(Expr.Grouping expr) {
     return evaluate(expr.expression);
+  }
+
+  void interpret(Expr expression) {
+    try {
+      Object value = evaluate(expression);
+      System.out.println(stringify(value));
+    } catch (RuntimeError error) {
+      Lox.runtimeError(error);
+    }
   }
 
   @Override
@@ -95,5 +105,19 @@ class Interpreter implements Expr.Visitor<Object> {
     if (a == null) return false;
 
     return a.equals(b);
+  }
+
+  private String stringify(Object object) {
+    if (object == null) return "nil";
+
+    if (object instanceof Double) {
+      String text = object.toString();
+      if (text.endsWith(".0")) {
+        text = text.substring(0, text.length() - 2);
+      }
+      return text;
+    }
+
+    return object.toString();
   }
 }
